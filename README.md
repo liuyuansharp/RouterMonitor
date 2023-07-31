@@ -8,10 +8,13 @@
 年初的时候意外接触到了ESP8266做的墨水屏日历，后来家里添置了软路由后，便鬼使神差的想着能不能做一个监视屏，然后就做了这个，起初的版本还没有图表，后来看到了Uinify路由器的小屏幕，便增加了图表的功能。
 
 ## 先上图
-|RouterMonitor | RouterMonitor视频|  皮卡丘涂装   | 皮卡丘视频 |
-|----|  ----  | --- |--- |
-| ![routermonitor](./images/routermonitor.png) | <video src="images/routermonitor.mp4" height="320">| ![pikaqiu](./images/pikaqiu.png)  | <video src="images/pikaqiu.mp4" height="320"> |
+|RouterMonitor |  皮卡丘涂装   |
+|----|  ----  |
+| ![routermonitor](./images/routermonitor.png) | ![pikaqiu](./images/pikaqiu.png)  | 
 
+
+- [RouterMonitor演示视频](https://www.bilibili.com/video/BV1km4y1L7YY/)
+- [皮卡丘演示视频](https://www.bilibili.com/video/BV1BM4y1W78d/)
 
 
 # 硬件资料
@@ -94,4 +97,23 @@ https://www.wch.cn/downloads/category/67.html?feature=USB%E8%BD%AC%E4%B8%B2%E5%8
 2. VSCode点击左侧platformIO的图表，点击`Upload and Monitor` 等待编译烧录完成即可
 ![](images/compile&flash.png)
 
+#FAQ
+## 烧录后温度信息不显示
+![温度始终为0](images/no-temperature.png)
 
+参考资料：
+https://hiwbb.com/2021/10/openwrt-netdata-show-temperature/
+
+原因： 
+1. netdata.conf 中关闭了插件chart的显示
+2. 基础软件 coreutils-timeout未安装
+
+解决办法：
+
+**登录openwrt终端**
+1. 安装timeout：`opkg install coreutils-timeout`
+2. 进入`/etc/netdata`
+3. 使用`./edit-config charts.d.conf`来编辑配置文件，这个edit-config等于是一个配置工具能够从/usr/lib拉取默认配置过来，在配置里最后加入`sensors=force`。不加一定不会有温度，原因未知。
+4. 用`/usr/lib/netdata/plugins.d/charts.d.plugin sensors`测一下，如果有一直跳数据出来，就说明成功了。
+5. Openwrt的版本默认可能关闭了chart.d插件，编辑`/etc/netdata/netdata.conf`把`charts.d = no`改为`charts.d = yes`或直接注释掉那一行，若没有这行则不需要
+6. 重启netdata： `/etc/init.d/netdata restart`
