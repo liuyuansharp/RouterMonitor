@@ -1,5 +1,5 @@
 # 路由监视器 RouterMonitor
-[toc]
+[[toc]]
 ## 前言
 > 这个项目当前功能还比较简单，配置功能的完善比我预期的要麻烦，但是耐不住大家都很期待，因此就先开源再完善，有能力的小伙伴可以先玩起来，也欢迎贡献PR.
 
@@ -91,14 +91,19 @@ https://www.wch.cn/downloads/category/67.html?feature=USB%E8%BD%AC%E4%B8%B2%E5%8
 2. 修改软路由的地址
 ![](images/router-config.png)
 
+3. 修改内存大小
+> 由于我r2s内存就是1G,图方便写了1024,大家根据实际情况修改，不然会出现内存显示错误,参见[Issue](https://gitee.com/dannylsl/routermonitor/issues/I7QX5V)
+![](images/mem.config.png)
+
+
 
 ## 编译并烧录
 1. USB连接上小电视或者开发板
 2. VSCode点击左侧platformIO的图表，点击`Upload and Monitor` 等待编译烧录完成即可
 ![](images/compile&flash.png)
 
-#FAQ
-## 烧录后温度信息不显示
+# FAQ
+## 1. 烧录后温度信息不显示
 ![温度始终为0](images/no-temperature.png)
 
 参考资料：
@@ -117,3 +122,8 @@ https://hiwbb.com/2021/10/openwrt-netdata-show-temperature/
 4. 用`/usr/lib/netdata/plugins.d/charts.d.plugin sensors`测一下，如果有一直跳数据出来，就说明成功了。
 5. Openwrt的版本默认可能关闭了chart.d插件，编辑`/etc/netdata/netdata.conf`把`charts.d = no`改为`charts.d = yes`或直接注释掉那一行，若没有这行则不需要
 6. 重启netdata： `/etc/init.d/netdata restart`
+
+## 2. Netdata温度显示正常，但是monitor依旧不显示
+
+如果netdata已经能够正常显示温度，大概率是因为 monitor 请求的key不对，不同的系统版本，温度sensor对应的key存在差异，修改方式如下. 从Netdata中找到温度曲线的key，替换到代码中getTemperature()方法请求温度的参数，两者需要保持一致
+![](images/temperature-config.png)
