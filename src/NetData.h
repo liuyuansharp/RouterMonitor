@@ -18,6 +18,9 @@ public:
     long last_entry;
     long before;
     long after;
+    String group;
+    String options_0;
+    String options_1;
 
     JsonArray dimension_names;
     JsonArray dimension_ids;
@@ -35,7 +38,7 @@ void parseNetDataResponse(WiFiClient &client, NetChartData &data)
 {
     // Stream& input;
 
-    StaticJsonDocument<1024> doc;
+    DynamicJsonDocument doc(1536);
 
     DeserializationError error = deserializeJson(doc, client);
 
@@ -43,32 +46,36 @@ void parseNetDataResponse(WiFiClient &client, NetChartData &data)
     {
         Serial.print(F("deserializeJson() failed: "));
         Serial.println(error.f_str());
+        return;
     }
 
-    JsonObject obj = doc.as<JsonObject>();
-    int idx = 1;
+    data.api = doc["api"]; // 1
+    data.id = doc["id"].as<String>();
+    data.name = doc["name"].as<String>();
+    data.view_update_every = doc["view_update_every"]; // 1
+    data.update_every = doc["update_every"];           // 1
+    data.first_entry = doc["first_entry"];             // 1691505357
+    data.last_entry = doc["last_entry"];               // 1691505905
+    data.after = doc["after"];                         // 1691505903
+    data.before = doc["before"];                       // 1691505904
+    data.group = doc["group"].as<String>();            // "average"
 
-    data.api = doc["api"];                             // 1
-    data.id = doc["id"].as<String>();                       // "system.cpu"
-    data.name = doc["name"].as<String>();                   // "system.cpu"
-    data.view_update_every = doc["view_update_every"]; // 2
-    data.update_every = doc["update_every"];           // 2
-    data.first_entry = doc["first_entry"];             // 1675566252
-    data.last_entry = doc["last_entry"];               // 1675574244
-    data.before = doc["before"];                       // 1675574244
-    data.after = doc["after"];                         // 1675574236
+    data.options_0 = doc["options"][0].as<String>(); // "jsonwrap"
+    data.options_1 = doc["options"][1].as<String>(); // "natural-points"
 
     data.dimension_names = doc["dimension_names"];
     data.dimension_ids = doc["dimension_ids"];
     data.latest_values = doc["latest_values"];
     data.view_latest_values = doc["view_latest_values"];
-    data.dimensions = doc["dimensions"]; // 5
-    data.points = doc["points"];         // 5
+
+    data.dimensions = doc["dimensions"];      // 3
+    data.points = doc["points"];              // 2
     data.format = doc["format"].as<String>(); // "array"
 
+    JsonArray db_points_per_tier = doc["db_points_per_tier"];
     data.result = doc["result"];
-    data.min = doc["min"]; // 1.8773467
-    data.max = doc["max"]; // 14.3929916
+    data.min = doc["min"]; // 2.1594684
+    data.max = doc["max"]; // 3.7468776
 }
 
 /**
@@ -123,10 +130,9 @@ bool getNetDataInfoWithDimension(String chartID, NetChartData &data, String dime
     return ret;
 }
 
-
-bool getNetDataInfo(String chartID, NetChartData &data) {
+bool getNetDataInfo(String chartID, NetChartData &data)
+{
     return getNetDataInfoWithDimension(chartID, data, "");
 }
- 
 
 #endif

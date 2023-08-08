@@ -96,7 +96,6 @@ void initLoginPage()
     lv_obj_t *preload = lv_spinner_create(login_page, NULL);
     lv_obj_set_size(preload, 100, 100);
     lv_obj_align(preload, NULL, LV_ALIGN_CENTER, 0, 0);
-   
 }
 
 // 连接WiFi
@@ -405,7 +404,7 @@ void setup()
     lv_cont_set_layout(cont, LV_LAYOUT_COLUMN_MID);
     lv_obj_set_style_local_border_color(cont, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, cont_color);
     lv_obj_set_style_local_bg_color(cont, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, cont_color);
-    
+
     // Upload & Download Symbol
     static lv_style_t iconfont;
     lv_style_init(&iconfont);
