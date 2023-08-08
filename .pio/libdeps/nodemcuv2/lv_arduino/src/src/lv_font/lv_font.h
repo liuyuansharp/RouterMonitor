@@ -224,6 +224,23 @@ LV_FONT_DECLARE(lv_font_simsun_16_cjk)
 LV_FONT_CUSTOM_DECLARE
 #endif
 
+#ifdef TENCENT_W7_16
+LV_FONT_DECLARE(tencent_w7_16)
+#endif
+
+#ifdef TENCENT_W7_22
+LV_FONT_DECLARE(tencent_w7_22)
+#endif
+
+#ifdef TENCENT_W7_24
+LV_FONT_DECLARE(tencent_w7_24)
+#endif
+
+#ifdef ICONFONT_SYMBOL
+LV_FONT_DECLARE(iconfont_symbol)
+#endif
+
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

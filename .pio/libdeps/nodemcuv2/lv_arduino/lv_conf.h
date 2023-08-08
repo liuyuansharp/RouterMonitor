@@ -338,7 +338,7 @@ typedef void * lv_indev_drv_user_data_t;            /*Type of user data in the i
  * https://fonts.google.com/specimen/Montserrat  */
 #define LV_FONT_MONTSERRAT_12    0
 #define LV_FONT_MONTSERRAT_14    0
-#define LV_FONT_MONTSERRAT_16    1
+#define LV_FONT_MONTSERRAT_16    0
 #define LV_FONT_MONTSERRAT_18    0
 #define LV_FONT_MONTSERRAT_20    0
 #define LV_FONT_MONTSERRAT_22    0
@@ -355,8 +355,10 @@ typedef void * lv_indev_drv_user_data_t;            /*Type of user data in the i
 #define LV_FONT_MONTSERRAT_44    0
 #define LV_FONT_MONTSERRAT_46    0
 #define LV_FONT_MONTSERRAT_48    0
+#define TENCENT_W7_16            1
 #define TENCENT_W7_22            1
 #define TENCENT_W7_24            1
+#define ICONFONT_SYMBOL          1
 
 /* Demonstrate special features */
 #define LV_FONT_MONTSERRAT_12_SUBPX      0
@@ -422,10 +424,14 @@ typedef void * lv_font_user_data_t;
 #define LV_THEME_DEFAULT_COLOR_PRIMARY      LV_COLOR_RED
 #define LV_THEME_DEFAULT_COLOR_SECONDARY    LV_COLOR_BLUE
 #define LV_THEME_DEFAULT_FLAG               LV_THEME_MATERIAL_FLAG_LIGHT
-#define LV_THEME_DEFAULT_FONT_SMALL         &lv_font_montserrat_16
-#define LV_THEME_DEFAULT_FONT_NORMAL        &lv_font_montserrat_16
-#define LV_THEME_DEFAULT_FONT_SUBTITLE      &lv_font_montserrat_16
-#define LV_THEME_DEFAULT_FONT_TITLE         &lv_font_montserrat_16
+// #define LV_THEME_DEFAULT_FONT_SMALL         &lv_font_montserrat_16
+// #define LV_THEME_DEFAULT_FONT_NORMAL        &lv_font_montserrat_16
+// #define LV_THEME_DEFAULT_FONT_SUBTITLE      &lv_font_montserrat_16
+// #define LV_THEME_DEFAULT_FONT_TITLE         &lv_font_montserrat_16
+#define LV_THEME_DEFAULT_FONT_SMALL         &tencent_w7_16
+#define LV_THEME_DEFAULT_FONT_NORMAL        &tencent_w7_16
+#define LV_THEME_DEFAULT_FONT_SUBTITLE      &tencent_w7_16
+#define LV_THEME_DEFAULT_FONT_TITLE         &tencent_w7_16
 
 
 /*=================

@@ -405,19 +405,25 @@ void setup()
     lv_cont_set_layout(cont, LV_LAYOUT_COLUMN_MID);
     lv_obj_set_style_local_border_color(cont, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, cont_color);
     lv_obj_set_style_local_bg_color(cont, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, cont_color);
+    
+    // Upload & Download Symbol
+    static lv_style_t iconfont;
+    lv_style_init(&iconfont);
+    lv_style_set_text_font(&iconfont, LV_STATE_DEFAULT, &iconfont_symbol);
 
-    // Upload & Download
     upload_label = lv_label_create(monitor_page, NULL);
-    lv_label_set_text(upload_label, LV_SYMBOL_UPLOAD);
+    lv_obj_add_style(upload_label, LV_LABEL_PART_MAIN, &iconfont);
+    lv_label_set_text(upload_label, CUSTOM_SYMBOL_UPLOAD);
     lv_color_t speed_label_color = lv_color_hex(0x838a99);
     lv_obj_set_style_local_text_color(upload_label, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_RED);
     lv_obj_set_pos(upload_label, 10, 18);
 
     lv_obj_t *down_label = lv_label_create(monitor_page, NULL);
-    lv_label_set_text(down_label, LV_SYMBOL_DOWNLOAD);
+    lv_obj_add_style(down_label, LV_LABEL_PART_MAIN, &iconfont);
+    lv_label_set_text(down_label, CUSTOM_SYMBOL_DOWNLOAD);
     speed_label_color = lv_color_hex(0x838a99);
     lv_obj_set_style_local_text_color(down_label, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_GREEN);
-    lv_obj_set_pos(down_label, 122, 18);
+    lv_obj_set_pos(down_label, 120, 18);
 
     // Upload & Download Speed Display
     static lv_style_t font_22;

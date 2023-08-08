@@ -23,8 +23,10 @@ CSRCS += lv_font_montserrat_12_subpx.c
 CSRCS += lv_font_montserrat_28_compressed.c
 CSRCS += lv_font_unscii_8.c
 CSRCS += lv_font_dejavu_16_persian_hebrew.c
+CSRCS += tencent_w7_16.c
 CSRCS += tencent_w7_22.c
 CSRCS += tencent_w7_24.c
+CSRCS += iconfont_symbol.c
 
 DEPPATH += --dep-path $(LVGL_DIR)/$(LVGL_DIR_NAME)/src/lv_font
 VPATH += :$(LVGL_DIR)/$(LVGL_DIR_NAME)/src/lv_font
