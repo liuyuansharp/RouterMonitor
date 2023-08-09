@@ -38,7 +38,7 @@ void parseNetDataResponse(WiFiClient &client, NetChartData &data)
 {
     // Stream& input;
 
-    DynamicJsonDocument doc(1536);
+    DynamicJsonDocument doc(2048);
 
     DeserializationError error = deserializeJson(doc, client);
 
