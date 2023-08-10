@@ -247,54 +247,54 @@ void updateNetworkInfoLabel()
     {
         // < 99.99 K/S
         lv_label_set_text_fmt(up_speed_label, "%.2f", up_speed);
-        lv_label_set_text(up_speed_unit_label, "K/S");
+        lv_label_set_text(up_speed_unit_label, "K/s");
     }
     else if (up_speed < 1000.0)
     {
         // 999.9 K/S
         lv_label_set_text_fmt(up_speed_label, "%.1f", up_speed);
-        lv_label_set_text(up_speed_unit_label, "K/S");
+        lv_label_set_text(up_speed_unit_label, "K/s");
     }
     else if (up_speed < 100000.0)
     {
         // 99.99 M/S
         up_speed /= 1024.0;
         lv_label_set_text_fmt(up_speed_label, "%.2f", up_speed);
-        lv_label_set_text(up_speed_unit_label, "M/S");
+        lv_label_set_text(up_speed_unit_label, "M/s");
     }
     else if (up_speed < 1000000.0)
     {
         // 999.9 M/S
         up_speed = up_speed / 1024.0;
         lv_label_set_text_fmt(up_speed_label, "%.1f", up_speed);
-        lv_label_set_text(up_speed_unit_label, "M/S");
+        lv_label_set_text(up_speed_unit_label, "M/s");
     }
 
     if (down_speed < 100.0)
     {
         // < 99.99 K/S
         lv_label_set_text_fmt(down_speed_label, "%.2f", down_speed);
-        lv_label_set_text(down_speed_unit_label, "K/S");
+        lv_label_set_text(down_speed_unit_label, "K/s");
     }
     else if (down_speed < 1000.0)
     {
         // 999.9 K/S
         lv_label_set_text_fmt(down_speed_label, "%.1f", down_speed);
-        lv_label_set_text(down_speed_unit_label, "K/S");
+        lv_label_set_text(down_speed_unit_label, "K/s");
     }
     else if (down_speed < 100000.0)
     {
         // 99.99 M/S
         down_speed /= 1024.0;
         lv_label_set_text_fmt(down_speed_label, "%.2f", down_speed);
-        lv_label_set_text(down_speed_unit_label, "M/S");
+        lv_label_set_text(down_speed_unit_label, "M/s");
     }
     else if (down_speed < 1000000.0)
     {
         // 999.9 M/S
         down_speed = down_speed / 1024.0;
         lv_label_set_text_fmt(down_speed_label, "%.1f", down_speed);
-        lv_label_set_text(down_speed_unit_label, "M/S");
+        lv_label_set_text(down_speed_unit_label, "M/s");
     }
 }
 
