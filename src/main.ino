@@ -68,9 +68,17 @@ void my_print(lv_log_level_t level, const char *file, uint32_t line, const char 
 }
 #endif
 
+// 屏幕亮度设置，value [0, 256] 越小月亮,越大越暗
+void setBrightness(int value) {
+    pinMode(TFT_BL, INPUT);
+    analogWrite(TFT_BL, value);
+    pinMode(TFT_BL, OUTPUT);
+}
+
 // 页面初始化
 void setupPages()
 {
+    setBrightness(180);
     login_page = lv_cont_create(lv_scr_act(), NULL);
     lv_obj_set_size(login_page, 240, 240); // 设置容器大小
     lv_obj_set_style_local_bg_color(login_page, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLACK);
