@@ -265,7 +265,7 @@ void updateNetworkInfoLabel()
     else if (up_speed < 1000000.0)
     {
         // 999.9 M/S
-        up_speed = up_speed / 1024.0 / 1024.0;
+        up_speed = up_speed / 1024.0;
         lv_label_set_text_fmt(up_speed_label, "%.1f", up_speed);
         lv_label_set_text(up_speed_unit_label, "M/S");
     }
@@ -292,7 +292,7 @@ void updateNetworkInfoLabel()
     else if (down_speed < 1000000.0)
     {
         // 999.9 M/S
-        down_speed = down_speed / 1024.0 / 1024.0;
+        down_speed = down_speed / 1024.0;
         lv_label_set_text_fmt(down_speed_label, "%.1f", down_speed);
         lv_label_set_text(down_speed_unit_label, "M/S");
     }
