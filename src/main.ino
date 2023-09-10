@@ -41,6 +41,7 @@ static lv_obj_t *temperature_arc;
 static lv_obj_t *ip_label;
 static lv_style_t arc_indic_style;
 static lv_obj_t *chart;
+static lv_obj_t *chia_label;
 
 static lv_chart_series_t *ser1;
 static lv_chart_series_t *ser2;
@@ -57,6 +58,12 @@ double mem_usage;
 double temp_value;
 lv_coord_t upload_serise[10] = {0};
 lv_coord_t download_serise[10] = {0};
+
+//chia数据
+double tot = 0.0;
+double b1 = 0.0;
+double b2 = 0.0;
+
 
 #if LV_USE_LOG != 0
 /* Serial debugging */
@@ -249,6 +256,21 @@ void getTemperature()
     }
 }
 
+void getChiaBalance()
+{
+    if (getNetDataChiaInfo(netChartData))
+    {
+        Serial.print("Chia Blance: ");
+        Serial.println(String(netChartData.tot).c_str());
+        Serial.println(String(netChartData.b1).c_str());
+        Serial.println(String(netChartData.b2).c_str());
+
+        tot = netChartData.tot;
+        b1 = netChartData.b1;
+        b2 = netChartData.b2;
+    }
+}
+
 void updateNetworkInfoLabel()
 {
     if (up_speed < 100.0)
@@ -313,19 +335,30 @@ void updateChartRange()
     lv_chart_set_range(chart, 0, (lv_coord_t)(max_speed * 1.1));
 }
 
+String get_chia_label_string(double tot, double b1, double b2)
+{
+    String label = "Blance " + String(tot) + " XCH";
+
+    return label;
+}
+
 // task循环执行的函数
 static void task_cb(lv_task_t *task)
 {
     if (WiFi.status() != WL_CONNECTED)
     {
         connectWiFi();
-        lv_label_set_text(ip_label, WiFi.localIP().toString().c_str());
+        // lv_label_set_text(ip_label, WiFi.localIP().toString().c_str());
     }
     getCPUUsage();
     getMemoryUsage();
     getTemperature();
     getNetworkReceived();
     getNetworkSent();
+    
+    getChiaBalance();
+    lv_label_set_text(chia_label, get_chia_label_string(tot,b1,b2).c_str());
+
     updateChartRange();
     lv_chart_refresh(chart);
 
@@ -393,11 +426,16 @@ void setup()
     lv_obj_set_style_local_bg_color(bg, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, bg_color);
     lv_obj_set_size(bg, LV_HOR_RES_MAX, LV_VER_RES_MAX);
 
-    // 显示ip地址
+    // // 显示ip地址
+    // ip_label = lv_label_create(monitor_page, NULL);
+    // lv_label_set_text(ip_label, WiFi.localIP().toString().c_str());
+    // // lv_label_set_text(ip_label, "192.168.100.199");
+    // lv_obj_set_pos(ip_label, 10, 220);
+
+    // chia余额
     ip_label = lv_label_create(monitor_page, NULL);
-    lv_label_set_text(ip_label, WiFi.localIP().toString().c_str());
-    // lv_label_set_text(ip_label, "192.168.100.199");
-    lv_obj_set_pos(ip_label, 10, 220);
+    lv_label_set_text(chia_label, get_chia_label_string(tot,b1,b2).c_str());
+    lv_obj_set_pos(chia_label, 10, 220);
 
     lv_obj_t *cont = lv_cont_create(monitor_page, NULL);
     lv_obj_set_auto_realign(cont, true); /*Auto realign when the size changes*/

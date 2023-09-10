@@ -32,6 +32,11 @@ public:
     JsonArray result;
     double min;
     double max;
+
+    //chia
+    float tot;
+    float b1;
+    float b2;
 };
 
 void parseNetDataResponse(WiFiClient &client, NetChartData &data)
@@ -135,4 +140,74 @@ bool getNetDataInfo(String chartID, NetChartData &data)
     return getNetDataInfoWithDimension(chartID, data, "");
 }
 
+void parseNetDataChiaResponse(WiFiClient &client, NetChartData &data)
+{
+    // Stream& input;
+
+    DynamicJsonDocument doc(2048);
+
+    DeserializationError error = deserializeJson(doc, client);
+
+    if (error)
+    {
+        Serial.print(F("deserializeJson() failed: "));
+        Serial.println(error.f_str());
+        return;
+    }
+
+    data.tot = doc["balance"];
+    data.b1 = doc["*maeq"];
+    data.b2 = doc["*djuq"];
+}
+
+bool getNetDataChiaInfoFromFullNode(NetChartData &data)
+{
+    const char *NETDATA_HOST = "192.168.11.76";
+    int NETDATA_PORT = 5000;
+
+    String reqRes = "/api/get_balance";
+
+    WiFiClient client;
+    bool ret = false;
+
+    // 建立http请求信息
+    String httpRequest = String("GET ") + reqRes + " HTTP/0.1\r\n" + "Host: " + NETDATA_HOST + "\r\n" + "Connection: close\r\n\r\n";
+
+    // 尝试连接服务器
+    if (client.connect(NETDATA_HOST, NETDATA_PORT))
+    {
+        // 向服务器发送http请求信息
+        client.print(httpRequest);
+        Serial.println("Sending request: ");
+        Serial.println(httpRequest);
+
+        // 获取并显示服务器响应状态行
+        String status_response = client.readStringUntil('\n');
+        Serial.print("status_response: ");
+        Serial.println(status_response);
+        // 使用find跳过HTTP响应头
+        if (client.find("\r\n\r\n"))
+        {
+            Serial.println("Found Header End. Start Parsing.");
+        }
+
+        // 利用ArduinoJson库解析NetData返回的信息
+        parseNetDataChiaResponse(client, data);
+        ret = true;
+    }
+    else
+    {
+        Serial.println(" connection failed!");
+    }
+    // 断开客户端与服务器连接工作
+    client.stop();
+    return ret;
+}
+
+bool getNetDataChiaInfo(NetChartData &data)
+{
+    return getNetDataChiaInfoFromFullNode(data);
+}
+
 #endif
+
