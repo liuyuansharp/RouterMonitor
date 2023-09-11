@@ -337,8 +337,7 @@ void updateChartRange()
 
 String get_chia_label_string(double tot, double b1, double b2)
 {
-    String label = "Blance " + String(tot) + " XCH";
-
+    String label = String(tot) + "/" + String(b1) + "/" + String(b2) + "";
     return label;
 }
 
@@ -431,11 +430,6 @@ void setup()
     // lv_label_set_text(ip_label, WiFi.localIP().toString().c_str());
     // // lv_label_set_text(ip_label, "192.168.100.199");
     // lv_obj_set_pos(ip_label, 10, 220);
-
-    // chia余额
-    ip_label = lv_label_create(monitor_page, NULL);
-    lv_label_set_text(chia_label, get_chia_label_string(tot,b1,b2).c_str());
-    lv_obj_set_pos(chia_label, 10, 220);
 
     lv_obj_t *cont = lv_cont_create(monitor_page, NULL);
     lv_obj_set_auto_realign(cont, true); /*Auto realign when the size changes*/
@@ -616,6 +610,17 @@ void setup()
     lv_obj_set_pos(temp_value_label, 160, 170);
 
     lv_task_t *t = lv_task_create(task_cb, 1000, LV_TASK_PRIO_MID, &test_data);
+
+    // chia余额
+    // lv_obj_t *chia_title = lv_label_create(monitor_page, NULL);
+    // lv_label_set_text(chia_title, "xch");
+    // lv_obj_set_style_local_text_color(chia_title, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_WHITE);
+    // lv_obj_set_pos(chia_title, 5, 220);
+
+    chia_label = lv_label_create(monitor_page, NULL);
+    lv_label_set_text(chia_label, get_chia_label_string(tot,b1,b2).c_str());
+    lv_obj_set_pos(chia_label, 5, 220);
+
 }
 
 void loop()
