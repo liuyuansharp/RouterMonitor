@@ -4,6 +4,7 @@
 #include <ESP8266WiFi.h>
 #include <ArduinoJson.h>
 #include <string>
+#include "config.h"
 
 class NetChartData
 {
@@ -87,8 +88,8 @@ void parseNetDataResponse(WiFiClient &client, NetChartData &data)
 
 bool getNetDataInfoWithDimension(String chartID, NetChartData &data, String dimensions_filter)
 {
-    const char *NETDATA_HOST = "192.168.31.160";
-    int NETDATA_PORT = 7777;
+    const char *NETDATA_HOST = g_conf.netdata_ip.c_str();
+    int NETDATA_PORT = g_conf.netdate_port;
     // String reqRes = "/api/v0/data?chart=sensors.temp_thermal_zone0_thermal_thermal_zone0&format=json&points=9&group=average&gtime=0&options=s%7Cjsonwrap%7Cnonzero&after=-10";
     String reqRes = "/api/v1/data?chart=" + chartID + "&format=array&points=9&group=average&gtime=0&options=s%7Cjsonwrap%7Cnonzero&after=-2";
     reqRes = reqRes + "&dimensions=" + dimensions_filter;
