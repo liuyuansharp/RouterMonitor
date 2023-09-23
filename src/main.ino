@@ -2,14 +2,15 @@
 #include <TFT_eSPI.h>
 #include <string>
 #include <ESP8266WiFi.h>
-
 #include "NetData.h"
+#include "config.h"
+#include <Ticker.h>
 
 using namespace std;
 
-const char *ssid = "HomeOfYuan";         // 连接WiFi名（此处使用taichi-maker为示例）
+const char *ssid = SSID;         // 连接WiFi名（此处使用taichi-maker为示例）
                                     // 请将您需要连接的WiFi名填入引号中
-const char *password = "aaaabbbbccccdddd"; // 连接WiFi密码（此处使用12345678为示例）
+const char *password = PASSWORD; // 连接WiFi密码（此处使用12345678为示例）
 
 // extern lv_font_t my_font_name;
 LV_FONT_DECLARE(tencent_w7_22)
@@ -63,7 +64,7 @@ lv_coord_t download_serise[10] = {0};
 double tot = 0.0;
 double b1 = 0.0;
 double b2 = 0.0;
-
+Ticker switch_ticker;
 
 #if LV_USE_LOG != 0
 /* Serial debugging */
@@ -186,7 +187,7 @@ void getMemoryUsage()
         Serial.print("Memory Available: ");
         Serial.println(String(netChartData.max).c_str());
 
-        mem_usage = 100 * (1.0 - netChartData.max / 393216);
+        mem_usage = 100 * (1.0 - netChartData.max / (1024 * g_conf.tot_memory));
     }
 }
 
@@ -221,7 +222,7 @@ lv_coord_t updateNetSeries(lv_coord_t *series, double speed)
 
 void getNetworkReceived()
 {
-    if (getNetDataInfoWithDimension("net.br0", netChartData, "received"))
+    if (getNetDataInfoWithDimension(g_conf.network.c_str(), netChartData, "received"))
     {
         Serial.print("Received: ");
         Serial.println(String(netChartData.max).c_str());
@@ -234,7 +235,7 @@ void getNetworkReceived()
 
 void getNetworkSent()
 {
-    if (getNetDataInfoWithDimension("net.br0", netChartData, "sent"))
+    if (getNetDataInfoWithDimension(g_conf.network.c_str(), netChartData, "sent"))
     {
         Serial.print("Sent: ");
         Serial.println(String(netChartData.max).c_str());
@@ -247,7 +248,7 @@ void getNetworkSent()
 
 void getTemperature()
 {
-    if (getNetDataInfo("sensors.pch_lewisburg_virtual_0_temperature", netChartData))
+    if (getNetDataInfo(g_conf.temp.c_str(), netChartData))
     {
         Serial.print("Temperature: ");
         Serial.println(String(netChartData.max).c_str());
@@ -349,6 +350,7 @@ static void task_cb(lv_task_t *task)
         connectWiFi();
         // lv_label_set_text(ip_label, WiFi.localIP().toString().c_str());
     }
+
     getCPUUsage();
     getMemoryUsage();
     getTemperature();
@@ -379,6 +381,29 @@ static void task_cb(lv_task_t *task)
     // 测试内存泄漏
     Serial.print("⚠ Left Memory:");
     Serial.println(ESP.getFreeHeap());
+}
+
+void TimerCalbackConf()
+{
+    static bool change = true;
+
+    if(change){
+        g_conf.netdata_ip = g_conf1.netdata_ip;
+        g_conf.netdate_port = g_conf1.netdate_port;
+        g_conf.temp = g_conf1.temp;
+        g_conf.network = g_conf1.network;
+        g_conf.tot_memory = g_conf1.tot_memory;
+        change = false;
+    }else{
+        g_conf.netdata_ip = g_conf2.netdata_ip;
+        g_conf.netdate_port = g_conf2.netdate_port;
+        g_conf.temp = g_conf2.temp;
+        g_conf.network = g_conf2.network;
+        g_conf.tot_memory = g_conf2.tot_memory;
+        change = true;
+    }
+
+    lv_label_set_text(chia_label, get_chia_label_string(tot,b1,b2).c_str());
 }
 
 void setup()
@@ -620,6 +645,8 @@ void setup()
     chia_label = lv_label_create(monitor_page, NULL);
     lv_label_set_text(chia_label, get_chia_label_string(tot,b1,b2).c_str());
     lv_obj_set_pos(chia_label, 5, 220);
+
+    switch_ticker.attach(SWITCHTIME,TimerCalbackConf); //定时器
 
 }
 
