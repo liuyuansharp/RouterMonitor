@@ -6,5 +6,8 @@ Cf g_conf = {"net.br0","sensors.pch_lewisburg_virtual_0_temperature","192.168.31
 //轮询IP1
 Cf g_conf1 = {"net.br0","sensors.pch_lewisburg_virtual_0_temperature","192.168.31.160",7777,384};
 
+// //轮询IP2
+// Cf g_conf2 = {"net.enp1s0","sensors.acpitz_acpi_0_temperature","192.168.31.52",7777,8};
+
 //轮询IP2
-Cf g_conf2 = {"net.enp1s0","sensors.acpitz_acpi_0_temperature","192.168.31.52",7777,8};
+Cf g_conf2 = {"net.wlp1s0","sensors.acpitz_acpi_0_temperature","192.168.31.66",7777,8};
