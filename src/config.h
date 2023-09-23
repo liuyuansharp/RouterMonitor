@@ -13,6 +13,7 @@ struct Config
 {
     String network;
     String temp;
+    int core;
     String netdata_ip;
     int netdate_port;
     int tot_memory;

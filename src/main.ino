@@ -248,7 +248,7 @@ void getTemperature()
         Serial.print("Temperature: ");
         Serial.println(String(netChartData.max).c_str());
 
-        temp_value = netChartData.max;
+        temp_value = netChartData.max / g_conf.core;
     }
 }
 
@@ -362,6 +362,7 @@ void TimerCalbackConf()
         g_conf.netdata_ip = g_conf1.netdata_ip;
         g_conf.netdate_port = g_conf1.netdate_port;
         g_conf.temp = g_conf1.temp;
+        g_conf.core = g_conf1.core;
         g_conf.network = g_conf1.network;
         g_conf.tot_memory = g_conf1.tot_memory;
         change = false;
@@ -369,6 +370,7 @@ void TimerCalbackConf()
         g_conf.netdata_ip = g_conf2.netdata_ip;
         g_conf.netdate_port = g_conf2.netdate_port;
         g_conf.temp = g_conf2.temp;
+        g_conf.core = g_conf2.core;
         g_conf.network = g_conf2.network;
         g_conf.tot_memory = g_conf2.tot_memory;
         change = true;
