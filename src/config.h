@@ -5,9 +5,9 @@
 #include <ArduinoJson.h>
 #include <string>
 
-#define SSID "HomeOfYuan";
-#define PASSWORD "aaaabbbbccccdddd";
-#define SWITCHTIME 20
+#define SSID "HomeOfYuan"; //wifi名
+#define PASSWORD "aaaabbbbccccdddd" //wifi密码;
+#define SWITCHTIME 20 //轮询间隔时间(s)
 
 struct Config
 {
@@ -22,7 +22,5 @@ typedef struct Config Cf;
 extern Cf g_conf;
 extern Cf g_conf1;
 extern Cf g_conf2;
-
-extern void TimerCalbackConf();
 
 #endif
