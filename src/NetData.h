@@ -44,7 +44,7 @@ void parseNetDataResponse(WiFiClient &client, NetChartData &data)
 {
     // Stream& input;
 
-    DynamicJsonDocument doc(2048);
+    DynamicJsonDocument doc(4096);
 
     DeserializationError error = deserializeJson(doc, client);
 
@@ -103,7 +103,7 @@ bool getNetDataInfoWithDimension(String chartID, NetChartData &data, String dime
     bool ret = false;
 
     // 建立http请求信息
-    String httpRequest = String("GET ") + reqRes + " HTTP/0.1\r\n" + "Host: " + NETDATA_HOST + "\r\n" + "Connection: close\r\n\r\n";
+    String httpRequest = String("GET ") + reqRes + " HTTP/1.1\r\n" + "Host: " + NETDATA_HOST + "\r\n" + "Connection: close\r\n\r\n";
 
     // 尝试连接服务器
     if (client.connect(NETDATA_HOST, NETDATA_PORT))
