@@ -1,12 +1,11 @@
 #include "config.h"
 
-//监控网口,netdata温度标识,核心数量,目标IP,目标端口,目标内存(G)
+//监控网口,netdata温度标识,核心数量,目标IP,目标端口,目标内存(G),双路才加上第二核心netdata温度标识
 // Cf g_conf = {"net.br0","sensors.pch_lewisburg_virtual_0_temperature",1,"192.168.31.160",7777,384};
-Cf g_conf = {"net.br0","sensors.coretemp_isa_0000_temperature",27,"192.168.31.160",7777,384};
-
+Cf g_conf = {"net.br0","sensors.coretemp_isa_0000_temperature",27,"192.168.31.160",7777,384,"sensors.coretemp_isa_0001_temperature"};
 //轮询IP1
 // Cf g_conf1 = {"net.br0","sensors.pch_lewisburg_virtual_0_temperature",1,"192.168.31.160",7777,384};
-Cf g_conf1 = {"net.br0","sensors.coretemp_isa_0000_temperature",27,"192.168.31.160",7777,384};
+Cf g_conf1 = {"net.br0","sensors.coretemp_isa_0000_temperature",27,"192.168.31.160",7777,384,"sensors.coretemp_isa_0001_temperature"};
 
 
 //轮询IP2

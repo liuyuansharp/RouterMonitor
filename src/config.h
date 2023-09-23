@@ -17,6 +17,7 @@ struct Config
     String netdata_ip;
     int netdate_port;
     int tot_memory;
+    String temp1 = "";
 };
 typedef struct Config Cf;
 
