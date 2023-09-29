@@ -7,7 +7,8 @@
 
 #define SSID "HomeOfYuan"; //wifi名
 #define PASSWORD "aaaabbbbccccdddd" //wifi密码;
-#define SWITCHTIME 20 //轮询间隔时间(s)
+#define SWITCHTIME 30 //轮询间隔时间(s)
+#define SWITCHTIMECHIA 45 //chia显示间隔时间(s)
 
 struct Config
 {

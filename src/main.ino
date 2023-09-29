@@ -42,7 +42,6 @@ static lv_obj_t *temperature_arc;
 static lv_obj_t *ip_label;
 static lv_style_t arc_indic_style;
 static lv_obj_t *chart;
-static lv_obj_t *chia_label;
 
 static lv_chart_series_t *ser1;
 static lv_chart_series_t *ser2;
@@ -65,6 +64,7 @@ double tot = 0.0;
 double b1 = 0.0;
 double b2 = 0.0;
 Ticker switch_ticker;
+Ticker switch_ticker_chia;
 
 #if LV_USE_LOG != 0
 /* Serial debugging */
@@ -362,7 +362,7 @@ static void task_cb(lv_task_t *task)
     if (WiFi.status() != WL_CONNECTED)
     {
         connectWiFi();
-        // lv_label_set_text(ip_label, WiFi.localIP().toString().c_str());
+        lv_label_set_text(ip_label, g_conf.netdata_ip.c_str());
     }
 
     getCPUUsage();
@@ -372,7 +372,6 @@ static void task_cb(lv_task_t *task)
     getNetworkSent();
     
     getChiaBalance();
-    lv_label_set_text(chia_label, get_chia_label_string(tot,b1,b2).c_str());
 
     updateChartRange();
     lv_chart_refresh(chart);
@@ -421,7 +420,12 @@ void TimerCalbackConf()
         change = true;
     }
 
-    lv_label_set_text(chia_label, get_chia_label_string(tot,b1,b2).c_str());
+    lv_label_set_text(ip_label, g_conf.netdata_ip.c_str());
+}
+
+void TimerCalbackChia()
+{
+    lv_label_set_text(ip_label, get_chia_label_string(tot,b1,b2).c_str());
 }
 
 void setup()
@@ -469,10 +473,9 @@ void setup()
     lv_obj_set_size(bg, LV_HOR_RES_MAX, LV_VER_RES_MAX);
 
     // // 显示ip地址
-    // ip_label = lv_label_create(monitor_page, NULL);
-    // lv_label_set_text(ip_label, WiFi.localIP().toString().c_str());
-    // // lv_label_set_text(ip_label, "192.168.100.199");
-    // lv_obj_set_pos(ip_label, 10, 220);
+    ip_label = lv_label_create(monitor_page, NULL);
+    lv_label_set_text(ip_label, g_conf.netdata_ip.c_str());
+    lv_obj_set_pos(ip_label, 5, 220);
 
     lv_obj_t *cont = lv_cont_create(monitor_page, NULL);
     lv_obj_set_auto_realign(cont, true); /*Auto realign when the size changes*/
@@ -654,18 +657,8 @@ void setup()
 
     lv_task_t *t = lv_task_create(task_cb, 1000, LV_TASK_PRIO_MID, &test_data);
 
-    // chia余额
-    // lv_obj_t *chia_title = lv_label_create(monitor_page, NULL);
-    // lv_label_set_text(chia_title, "xch");
-    // lv_obj_set_style_local_text_color(chia_title, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_WHITE);
-    // lv_obj_set_pos(chia_title, 5, 220);
-
-    chia_label = lv_label_create(monitor_page, NULL);
-    lv_label_set_text(chia_label, get_chia_label_string(tot,b1,b2).c_str());
-    lv_obj_set_pos(chia_label, 5, 220);
-
     switch_ticker.attach(SWITCHTIME,TimerCalbackConf); //定时器
-
+    switch_ticker_chia.attach(SWITCHTIMECHIA,TimerCalbackChia); //CHIA显示定时器
 }
 
 void loop()
