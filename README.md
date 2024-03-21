@@ -35,7 +35,7 @@ Fork from https://gitee.com/dannylsl/routermonitor
 - 2.配置信息
 
 ```cpp
-
+//config.cpp
 //监控网口,netdata温度标识,核心数量,目标IP,目标端口,目标内存(G),第二节点netdata温度标识（双路节点才需要）
 // Cf g_conf = {"net.br0","sensors.pch_lewisburg_virtual_0_temperature",1,"192.168.31.160",19999,384};
 Cf g_conf = {"net.br0","sensors.coretemp_isa_0000_temperature",27,"192.168.31.160",19999,384,"sensors.coretemp_isa_0001_temperature"};
